@@ -39,9 +39,28 @@ bool core::initCore(const char* windowName, int width, int height, bool fullscre
 	std::cout << "ERROR (2): " << IMG_GetError() << std::endl;
 	return false;
 }
+
 void core::update(){
-
+	SDL_RenderClear(render);
+	gameMap->drawMap(render);
+	SDL_RenderPresent(render);
 }
-void core::finCore(){
 
+void core::finCore(){
+	SDL_DestroyRenderer(render);
+	SDL_DestroyWindow(window);
+	reset();
+}
+
+bool core::createMap(int blockAmount, int squareTile){
+	this->gameMap = new map;
+	return gameMap->createMap(&blockAmount, &squareTile);
+}
+
+bool core::loadMap(const char* file){
+	this->gameMap = new map;
+	return gameMap->loadMap(file);
+}
+SDL_Renderer* core::getRender(){
+	return render;
 }
